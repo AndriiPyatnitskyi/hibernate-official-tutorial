@@ -28,6 +28,7 @@ public class EventManager {
         session.save(theEvent);
 
         session.getTransaction().commit();
+        
     }
 
 }
