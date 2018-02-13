@@ -11,8 +11,14 @@ public class EventManager {
     public static void main(String[] args) {
         EventManager mgr = new EventManager();
 
-        if (true) {
-            mgr.createAndStoreEvent("My Event", new Date());
+        mgr.createAndStoreEvent("My Event", new Date());
+
+        List events = mgr.listEvents();
+        for (int i = 0; i < events.size(); i++) {
+            Event theEvent = (Event) events.get(i);
+            System.out.println(
+                    "Event: " + theEvent.getTitle() + " Time: " + theEvent.getDate()
+            );
         }
 
         HibernateUtil.getSessionFactory().close();
@@ -29,6 +35,15 @@ public class EventManager {
 
         session.getTransaction().commit();
 
+    }
+
+    private List listEvents() {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        List result = session.createQuery("from Event").list();
+        session.getTransaction().commit();
+        return result;
     }
 
 }
